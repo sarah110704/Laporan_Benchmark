@@ -38,8 +38,8 @@ Proses ingestion PDF yang telah dijalankan menghasilkan data berikut:
 | Jumlah chunk | 66 |
 | Rata-rata panjang chunk | 742 karakter |
 | Chunk teks | 61 |
-| Chunk tabel | 4 |
-| Chunk keterangan gambar | 1 |
+| Chunk tabel | 2 |
+| Chunk keterangan gambar | 2 |
 | Dimensi vektor | 384 |
 | Points di Qdrant | 66 |
 | Vectors di Qdrant | 66 |

@@ -38,7 +38,6 @@ Proses ingestion PDF yang telah dijalankan menghasilkan data berikut:
 | Points di Qdrant | 66 |
 | Vectors di Qdrant | 66 |
 | Status collection | Green |
-| Waktu ingestion | 18,8 detik |
 
 Collection yang digunakan adalah:
 

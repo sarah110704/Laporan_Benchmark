@@ -67,8 +67,6 @@ dengan lokasi penyimpanan lokal:
 | 6 | Paraphrased | Tahap tindakan nyata apa yang paling kuat menerjemahkan arahan pimpinan menjadi program kesehatan mental? | OSH implementation |
 | 7 | Paraphrased | Seberapa besar pengaruh tata kelola yang bekerja melalui rangkaian keterlibatan keselamatan kerja? | 17% |
 | 8 | Conversational | Jadi perusahaan yang tata kelolanya bagus lebih serius mengurus mental pekerjanya? | Governance yang kuat mendukung adopsi praktik kesehatan mental |
-| 9 | Noisy | brp persen efeknya yg lewat proses osh engagemnt? | 17% |
-| 10 | Noisy | tahap osh yg pling ngaruh ke program mental karyawan itu apa? | Implementation |
 
 ---
 

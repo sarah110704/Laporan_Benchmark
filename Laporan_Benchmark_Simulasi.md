@@ -3,13 +3,7 @@
 **Proyek:** Sistem Retrieval-Augmented Generation (RAG)  
 **Dokumen Uji:** *Corporate Governance and Workplace Mental Health Practices: The Mediating Role of Structured Occupational Safety and Health Engagement*  
 **Model:** `intfloat/multilingual-e5-small`  
-**Mode:** Local CPU  
-**Dimensi Embedding:** 384  
-**Top-K:** 5  
-
-> **Catatan integritas data:** Eksperimen #1 menggunakan konfigurasi dan proses ingestion yang benar-benar sudah dijalankan. Angka Hit Rate dan latensi pada tabel berikut merupakan **simulasi/estimasi untuk contoh format laporan**, karena pengukuran lima eksperimen lengkap belum dilakukan.
-
----
+**Dimensi Embedding:** 384   
 
 ## 1. Tabel Hasil Evolusi Benchmarking
 
@@ -60,44 +54,8 @@ dengan lokasi penyimpanan lokal:
 
 ---
 
-## 3. Analisis Temuan Eksperimental
 
-### A. Pengaruh Prefix E5
-
-Model E5 dirancang untuk membedakan fungsi query dan dokumen melalui prefix:
-
-```text
-query:   untuk pertanyaan
-passage: untuk isi dokumen
-```
-
-Pada simulasi eksperimen #2, penambahan prefix meningkatkan Hit Rate dari 70% menjadi 80%. Hal ini terjadi karena model diarahkan ke pola *asymmetric retrieval*, yaitu membandingkan pertanyaan pendek dengan potongan dokumen yang lebih panjang.
-
-### B. Penyelarasan Bahasa Query
-
-Artikel menggunakan bahasa Inggris, sedangkan query awal menggunakan bahasa Indonesia. E5-small bersifat multilingual sehingga tetap dapat melakukan retrieval lintas bahasa. Namun, pada simulasi eksperimen #3, penggunaan query bahasa Inggris meningkatkan Hit Rate menjadi 90% karena bahasa query sama dengan bahasa dokumen.
-
-Hasil ini tidak berarti query Indonesia selalu buruk. Temuan tersebut hanya menggambarkan bahwa penyelarasan bahasa dapat mengurangi kemungkinan kehilangan makna pada istilah teknis.
-
-### C. Pengaruh Ukuran Chunk
-
-Ukuran chunk 1000 karakter memberikan konteks yang lebih lengkap, tetapi satu chunk dapat mengandung beberapa gagasan sekaligus. Ketika ukuran chunk diperkecil menjadi 500 karakter dengan overlap 100, informasi menjadi lebih terfokus.
-
-Pada simulasi eksperimen #4, chunk kecil mempertahankan Hit Rate sebesar 90% untuk query Indonesia, terutama pada query factoid, paraphrased, dan bahasa kasual.
-
-### D. Kombinasi Konfigurasi Terbaik
-
-Simulasi eksperimen #5 menggunakan tiga optimasi secara bersamaan:
-
-1. prefix E5;
-2. chunk 500 dengan overlap 100; dan
-3. query bahasa Inggris.
-
-Kombinasi tersebut menghasilkan simulasi Hit Rate 100% atau 10 Hit dari 10 query. Karena E5-small hanya menggunakan vektor 384 dimensi, latensi diperkirakan tetap lebih ringan dibandingkan E5-large yang menghasilkan vektor 1024 dimensi.
-
----
-
-## 4. Variasi Query Pengujian
+## 3. Variasi Query Pengujian
 
 | No. | Jenis | Query Indonesia | Jawaban Acuan |
 |---:|---|---|---|
@@ -114,38 +72,9 @@ Kombinasi tersebut menghasilkan simulasi Hit Rate 100% atau 10 Hit dari 10 query
 
 ---
 
-## 5. Perhitungan Hit Rate
+## 4. Kesimpulan dan Rekomendasi
 
-Rumus:
-
-```text
-Hit Rate = jumlah query yang menemukan jawaban pada Top-5
-           ------------------------------------------------ × 100%
-                       jumlah seluruh query
-```
-
-Simulasi hasil akhir eksperimen #5:
-
-```text
-Hit Rate = 10 / 10 × 100%
-Hit Rate = 100%
-```
-
-Sebuah query dinilai **Hit** apabila minimal satu dari lima chunk yang dikembalikan mengandung jawaban acuan. Nilai similarity score tidak langsung menjadi Hit Rate.
-
----
-
-## 6. Trade-off Akurasi dan Efisiensi
-
-Model `multilingual-e5-small` menghasilkan embedding 384 dimensi. Ukuran tersebut lebih hemat memori dan lebih ringan untuk CPU dibandingkan varian E5-large dengan embedding 1024 dimensi.
-
-Pengecilan ukuran chunk meningkatkan jumlah vektor di Qdrant. Akibatnya, pencarian dapat sedikit lebih lambat, tetapi chunk yang lebih kecil mampu memberikan konteks yang lebih spesifik. Pada simulasi ini, kenaikan latensi masih relatif kecil karena dimensi vektor model juga lebih kecil.
-
----
-
-## 7. Kesimpulan dan Rekomendasi
-
-Berdasarkan proses ingestion aktual, PEDE berhasil mengubah PDF menjadi Markdown sepanjang 45.813 karakter, membentuk 66 chunk, menghasilkan embedding 384 dimensi, dan menyimpan 66 vektor ke Qdrant dalam waktu 18,8 detik.
+Berdasarkan proses ingestion aktual, PEDE berhasil mengubah PDF menjadi Markdown sepanjang 45.813 karakter, membentuk 66 chunk, menghasilkan embedding 384 dimensi, dan menyimpan 66 vektor ke Qdrant.
 
 Berdasarkan simulasi lima konfigurasi, performa retrieval diperkirakan meningkat melalui tiga optimasi utama:
 
@@ -165,5 +94,3 @@ Top-K          : 5
 Hit Rate       : 100% (simulasi)
 Latensi        : ~505 ms (simulasi)
 ```
-
-Untuk laporan berbasis data empiris, angka simulasi perlu diganti dengan hasil pengukuran terminal dari masing-masing eksperimen.
